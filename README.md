@@ -1,0 +1,2 @@
+# animations
+whimsical animations study
