@@ -1,7 +1,53 @@
 import {random, range} from 'lodash';
 import { normalize,  convertDegreesToRadians, convertPolarToCartesian} from './utils.js';
 
-console.log("test");
+const btn = document.querySelector('.particleButton');
+
+//so the cleanup will timeout never fires out before the animaition is over
+const FADE_DURATION = 1000;
+
+//triggering the generation only when the button is liked
+//removing the like doesn't trigger the generation
+btn.addEventListener('click', ()=>{
+    //checking if is a like or dislike
+    btn.classList.toggle('liked')
+    const isLiked = btn.classList.contains('liked');
+    if (!isLiked){ return; }
+
+    //array to collect particles for clean up
+    const particles = []
+
+    //generating 5 particles
+    range(5).forEach((index)=>{
+        //creating the DOM element (can't have a div inside a button)
+        const particle = document.createElement('span');
+        particle.classList.add('particle');
+
+        //positionning the particles
+        particle.style.top = random(0,100) + '%';
+        particle.style.left = random(0,100) + '%';
+
+        //setting attributes as css variables
+        particle.setAttribute('fade-duration', FADE_DURATION + 'ms');
+        //could be set as inline style, ex: particle.style.animationDuration = FADE_DURATION + 'ms';
+
+        //adding particle to the DOM
+        btn.appendChild(particle);
+
+        //keeping track of this particle so that it can be cleanned up latter
+        particles.push(particle);
+
+    });
+    //cleanning up!
+    window.setTimeout(()=>{
+        particles.forEach((particle)=>{
+            particle.remove();
+        })
+    // adding a little extra time to make sure the animation will be complete before it is cleanned    
+    }, FADE_DURATION + 200)
+
+});
+
 
 
 
