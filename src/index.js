@@ -4,8 +4,20 @@ import { normalize,  convertPolarToCartesian} from './utils.js';
 const btn = document.querySelector('.particleButton');
 
 //so the cleanup will timeout never fires out before the animaition is over
-const FADE_DURATION = 1000;
 const NUM_OF_PARTICLES = 20;
+const MIN_DISTANCE = 8;
+const MAX_DISTANCE = 124;
+const MIN_FADE_DURATION = 500;
+const MAX_FADE_DURATION = 1500;
+const MAX_FADE_DELAY = 500;
+const MIN_POP_DURATION = 400;
+const MAX_POP_DURATION = 800;
+const MIN_SIZE = 9;
+const MAX_SIZE = 15;
+const MIN_SCALE = 0.3;
+const MAX_SCALE = 2.5;
+
+
 //Jitter is the amount of variance allowed for each angle
 const JITTER = 40;
 
@@ -32,14 +44,30 @@ btn.addEventListener('click', ()=>{
         //we can control the amount of variance to make it feel more randomly distributed, otherwhise the particles will
         //clump together about 30% of the time.
         const angle = normalize(index,0,NUM_OF_PARTICLES,0,360) + random(-JITTER,JITTER);
-        const distance = random(40,80);
+        const distance = random(MIN_DISTANCE, MAX_DISTANCE);
         const [x,y] = convertPolarToCartesian(angle,distance);
-
-        //setting attributes as css variables
-        particle.style.setProperty('--fade-duration', FADE_DURATION + 'ms');
+        
         particle.style.setProperty('--x', x + 'px');
         particle.style.setProperty('--y', y + 'px');
-        //could be set as inline style, ex: particle.style.animationDuration = FADE_DURATION + 'ms';
+
+        //particle that travel further will take longer to fade to transparent
+        const FADE_DURATION = normalize(distance,MIN_DISTANCE,MAX_DISTANCE,MIN_FADE_DURATION,MAX_FADE_DURATION) + random(-200,200);
+        particle.style.setProperty('--fade-duration', FADE_DURATION + 'ms');
+
+        //particles should stay opaque for a while before starting to fade to transparent
+        //the delay to start fading out will also be proportional to the distance
+        const FADE_DELAY = normalize(distance,MIN_DISTANCE,MAX_DISTANCE,0,MAX_FADE_DELAY);
+        particle.style.setProperty('--fade-delay', FADE_DELAY + 'ms');
+
+        //particles that travel further will also take longer total animation time
+        const POP_DURATION = normalize(distance,MIN_DISTANCE,MAX_DISTANCE,MIN_POP_DURATION,MAX_POP_DURATION) + random(-200,200);
+        particle.style.setProperty('--pop-duration', POP_DURATION + 'ms');
+
+        //size of particles should be random
+        particle.style.setProperty('--size', random(MIN_SIZE, MAX_SIZE) + 'px');
+
+        //scale particles randomly (true for decimal value)
+        particle.style.setProperty('--scale', random(MIN_SCALE,MAX_SCALE,true));
 
         //adding particle to the DOM
         btn.appendChild(particle);
@@ -54,7 +82,7 @@ btn.addEventListener('click', ()=>{
             particle.remove();
         })
     // adding a little extra time to make sure the animation will be complete before it is cleanned    
-    }, FADE_DURATION + 200)
+    }, MAX_FADE_DURATION + MAX_FADE_DELAY + 400)
 
 });
 

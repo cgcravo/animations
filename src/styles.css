@@ -13,7 +13,10 @@
 
 @keyframes disperse {
   to {
-    transform: translate(var(--x), var(--y));
+    transform: 
+      /*rotate(180deg)*/
+      translate(var(--x), var(--y))
+      scale(var(--scale));
   }
 }
 
@@ -61,13 +64,13 @@ body {
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 12px;
-  height: 12px;
+  width: var(--size);
+  height: var(--size);
   border-radius: 50%;
   background: white;
   animation:
-      fadeToTransparent var(--fade-duration) forwards,
-      disperse 500ms forwards cubic-bezier(0.2, 0.56, 0, 1);
+      fadeToTransparent var(--fade-duration) var(--fade-delay) forwards,
+      disperse var(--pop-duration) forwards cubic-bezier(0.2, 0.56, 0, 1);
 }
 
 /*
