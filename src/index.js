@@ -5,6 +5,9 @@ const btn = document.querySelector('.particleButton');
 
 //so the cleanup will timeout never fires out before the animaition is over
 const FADE_DURATION = 1000;
+const NUM_OF_PARTICLES = 20;
+//Jitter is the amount of variance allowed for each angle
+const JITTER = 40;
 
 //triggering the generation only when the button is liked
 //removing the like doesn't trigger the generation
@@ -18,14 +21,17 @@ btn.addEventListener('click', ()=>{
     const particles = []
 
     //generating 5 particles
-    range(5).forEach(()=>{
+    range(NUM_OF_PARTICLES).forEach((index)=>{
         //creating the DOM element (can't have a div inside a button)
         const particle = document.createElement('span');
         particle.classList.add('particle');
 
-        //positionning the particles with polar coordinates
+        //Positionning the particles using polar coordinates:
         //(CSS doesn't understand polar coordinates, so we need to transform it to cartisian before CSS rendering)
-        const angle = random(0,360);
+        //By dividing the 360 range into equal slices using linear interpolation and then adding a small variance to the angle
+        //we can control the amount of variance to make it feel more randomly distributed, otherwhise the particles will
+        //clump together about 30% of the time.
+        const angle = normalize(index,0,NUM_OF_PARTICLES,0,360) + random(-JITTER,JITTER);
         const distance = random(40,80);
         const [x,y] = convertPolarToCartesian(angle,distance);
 
@@ -48,7 +54,7 @@ btn.addEventListener('click', ()=>{
             particle.remove();
         })
     // adding a little extra time to make sure the animation will be complete before it is cleanned    
-    }, 10000000000 + 200)
+    }, FADE_DURATION + 200)
 
 });
 
