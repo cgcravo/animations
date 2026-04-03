@@ -1,17 +1,21 @@
 
-@keyframes fadeOut{
-  to { 
+@keyframes fadeToTransparent {
+  to {
     opacity: 0;
   }
 }
 
-@keyframes fadeIn {
+@keyframes fadeToOpaque {
   to {
     opacity: 1;
   }
 }
 
-
+@keyframes disperse {
+  to {
+    transform: translate(var(--x), var(--y));
+  }
+}
 
 html {
   --red: oklch(0.65 0.3 19.41);
@@ -55,11 +59,15 @@ body {
 
 .particle {
   position: absolute;
+  inset: 0;
+  margin: auto;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background: white;
-  animation:  fadeOut var(--fade-duration) ease-out forwards;
+  animation:
+      fadeToTransparent var(--fade-duration) forwards,
+      disperse 500ms forwards cubic-bezier(0.2, 0.56, 0, 1);
 }
 
 /*

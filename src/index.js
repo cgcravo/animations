@@ -1,5 +1,5 @@
 import {random, range} from 'lodash';
-import { normalize,  convertDegreesToRadians, convertPolarToCartesian} from './utils.js';
+import { normalize,  convertPolarToCartesian} from './utils.js';
 
 const btn = document.querySelector('.particleButton');
 
@@ -18,17 +18,21 @@ btn.addEventListener('click', ()=>{
     const particles = []
 
     //generating 5 particles
-    range(5).forEach((index)=>{
+    range(5).forEach(()=>{
         //creating the DOM element (can't have a div inside a button)
         const particle = document.createElement('span');
         particle.classList.add('particle');
 
-        //positionning the particles
-        particle.style.top = random(0,100) + '%';
-        particle.style.left = random(0,100) + '%';
+        //positionning the particles with polar coordinates
+        //(CSS doesn't understand polar coordinates, so we need to transform it to cartisian before CSS rendering)
+        const angle = random(0,360);
+        const distance = random(40,80);
+        const [x,y] = convertPolarToCartesian(angle,distance);
 
         //setting attributes as css variables
-        particle.setAttribute('fade-duration', FADE_DURATION + 'ms');
+        particle.style.setProperty('--fade-duration', FADE_DURATION + 'ms');
+        particle.style.setProperty('--x', x + 'px');
+        particle.style.setProperty('--y', y + 'px');
         //could be set as inline style, ex: particle.style.animationDuration = FADE_DURATION + 'ms';
 
         //adding particle to the DOM
@@ -44,7 +48,7 @@ btn.addEventListener('click', ()=>{
             particle.remove();
         })
     // adding a little extra time to make sure the animation will be complete before it is cleanned    
-    }, FADE_DURATION + 200)
+    }, 10000000000 + 200)
 
 });
 
