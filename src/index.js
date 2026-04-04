@@ -32,6 +32,11 @@ btn.addEventListener('click', ()=>{
     const isLiked = btn.classList.contains('liked');
     if (!isLiked){ return; }
 
+    //Instead of enabling the animation for everyone and then disabling it for users who have expressed a preference to reduce motion,
+    //it is safer to remove the transition by default and enable it only when the browser detects that the “Reduce motion” option is not selected.
+    const isMotionEnabled = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+    if(!isMotionEnabled){return;}
+
     //array to collect particles for clean up
     const particles = []
 
