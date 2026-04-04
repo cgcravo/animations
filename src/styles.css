@@ -98,10 +98,14 @@ body {
   background: hsl(270deg 100% 80%);
 }
 
-.particleButton.liked .popCircle {
-  animation: fromShrunken var(--pop-circle-duration),
-    circleColorShift var(--pop-circle-duration),
-    fadeFromOpaque 300ms var(--pop-circle-duration) backwards;
+/*animations and transitons will be motion friendly*/
+@media (prefers-reduced-motion: no-preference) {
+  .particleButton.liked .popCircle {
+    animation: 
+      fromShrunken var(--pop-circle-duration),
+      circleColorShift var(--pop-circle-duration),
+      fadeFromOpaque 300ms var(--pop-circle-duration) backwards;
+  }
 }
 
 .particleButton svg {
@@ -111,28 +115,31 @@ body {
   height: 3rem;
 }
 
-.particleButton.liked svg {
-  /*spring physics done in easing wizzard*/
-  animation: fromShrunken 2000ms var(--pop-circle-duration) backwards
-    linear(
-      0,
-      0.04 1.1%,
-      0.156 2.3%,
-      1.015 8.5%,
-      1.157 10.4%,
-      1.217 12.4%,
-      1.217 13.6%,
-      1.193 15%,
-      0.992 21.7%,
-      0.964 23.5%,
-      0.952 25.3%,
-      0.957 27.9%,
-      1.002 34.7%,
-      1.01 38.2%,
-      0.998 51%,
-      1
-    );
+@media (prefers-reduced-motion: no-preference) {
+  .particleButton.liked svg {
+    /*spring physics done in easing wizzard*/
+    animation: fromShrunken 2000ms var(--pop-circle-duration) backwards
+      linear(
+        0,
+        0.04 1.1%,
+        0.156 2.3%,
+        1.015 8.5%,
+        1.157 10.4%,
+        1.217 12.4%,
+        1.217 13.6%,
+        1.193 15%,
+        0.992 21.7%,
+        0.964 23.5%,
+        0.952 25.3%,
+        0.957 27.9%,
+        1.002 34.7%,
+        1.01 38.2%,
+        0.998 51%,
+        1
+      );
+  }
 }
+
 
 .particle {
   position: absolute;
