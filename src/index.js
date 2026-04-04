@@ -7,21 +7,24 @@ const btn = document.querySelector('.particleButton');
 const NUM_OF_PARTICLES = 20;
 const MIN_DISTANCE = 8;
 const MAX_DISTANCE = 124;
+//Jitter is the amount of variance allowed for each angle
+const JITTER = 40;
 const MIN_FADE_DURATION = 500;
 const MAX_FADE_DURATION = 1500;
 const MAX_FADE_DELAY = 500;
+//amount of time particles take to fully disperse
 const MIN_POP_DURATION = 400;
 const MAX_POP_DURATION = 800;
 const MIN_SIZE = 9;
 const MAX_SIZE = 15;
 const MIN_SCALE = 0.3;
 const MAX_SCALE = 2.5;
+//particles will wait for the button circle grow to its full size before animate the particles
+const POP_CIRCLE_DURATION = 150;
 
+btn.style.setProperty('--pop-circle-duration', POP_CIRCLE_DURATION + 'ms');
 
-//Jitter is the amount of variance allowed for each angle
-const JITTER = 40;
-
-//triggering the generation only when the button is liked
+//triggering particles generation only when the button is liked
 //removing the like doesn't trigger the generation
 btn.addEventListener('click', ()=>{
     //checking if is a like or dislike
@@ -72,12 +75,17 @@ btn.addEventListener('click', ()=>{
         //twinkle effect
         particle.style.setProperty('--twinkle-duration', random(150,300) + 'ms');
         particle.style.setProperty('--twinkle-opacity', random(0.325,0.5,true));
-        
-        //adding particle to the DOM
-        btn.appendChild(particle);
 
         //keeping track of this particle so that it can be cleanned up latter
         particles.push(particle);
+        
+        //adding particles to the DOM after the circle fully grows
+        window.setTimeout(()=>{
+            particles.forEach((particle)=>{
+                btn.appendChild(particle);
+            })
+        }, POP_CIRCLE_DURATION);
+
 
     });
     //cleanning up!
@@ -86,7 +94,7 @@ btn.addEventListener('click', ()=>{
             particle.remove();
         })
     // adding a little extra time to make sure the animation will be complete before it is cleanned    
-    }, MAX_FADE_DURATION + MAX_FADE_DELAY + 400)
+    }, MAX_FADE_DURATION + MAX_FADE_DELAY  + POP_CIRCLE_DURATION + 400)
 
 });
 

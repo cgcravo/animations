@@ -1,3 +1,14 @@
+@keyframes fadeFromTransparent {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeFromOpaque {
+  from {
+    opacity: 1;
+  }
+}
 
 @keyframes fadeToTransparent {
   to {
@@ -11,11 +22,16 @@
   }
 }
 
+@keyframes fromShrunken {
+  from {
+    transform: scale(0);
+  }
+}
+
 @keyframes disperse {
   to {
     transform: 
-      /*rotate(180deg)*/
-      translate(var(--x), var(--y))
+      /*rotate(180deg)*/ translate(var(--x), var(--y))
       scale(var(--scale));
   }
 }
@@ -25,6 +41,12 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes circleColorShift {
+  from {
+    background: hsl(350deg, 100%, 80%);
   }
 }
 
@@ -61,11 +83,48 @@ body {
   }
 }
 
+.popCircle {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  background: hsl(270deg 100% 80%);
+}
+
+.particleButton.liked .popCircle {
+  animation: fromShrunken var(--pop-circle-duration),
+    circleColorShift var(--pop-circle-duration),
+    fadeFromOpaque 300ms var(--pop-circle-duration) backwards;
+}
+
 .particleButton svg {
   position: relative;
   display: block;
   width: 3rem;
   height: 3rem;
+}
+
+.particleButton.liked svg {
+  /*spring physics done in easing wizzard*/
+  animation: fromShrunken 2000ms var(--pop-circle-duration) backwards
+    linear(
+      0,
+      0.04 1.1%,
+      0.156 2.3%,
+      1.015 8.5%,
+      1.157 10.4%,
+      1.217 12.4%,
+      1.217 13.6%,
+      1.193 15%,
+      0.992 21.7%,
+      0.964 23.5%,
+      0.952 25.3%,
+      0.957 27.9%,
+      1.002 34.7%,
+      1.01 38.2%,
+      0.998 51%,
+      1
+    );
 }
 
 .particle {
@@ -78,10 +137,9 @@ body {
   background: white;
   /* we can get away with multiple keyframes tweaking the same property by using the dinamic keyframe fading from the full keyframe*/
   /*so the twinkle animation needs to be the first keyframe, followed by the fadeToTransparent animation*/
-  animation:
-      twinkle var(--twinkle-duration) infinite alternate ease-in-out,
-      fadeToTransparent var(--fade-duration) var(--fade-delay) forwards,
-      disperse var(--pop-duration) forwards cubic-bezier(0.2, 0.56, 0, 1);
+  animation: twinkle var(--twinkle-duration) infinite alternate ease-in-out,
+    fadeToTransparent var(--fade-duration) var(--fade-delay) forwards,
+    disperse var(--pop-duration) forwards cubic-bezier(0.2, 0.56, 0, 1);
 }
 
 /*
