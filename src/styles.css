@@ -19,6 +19,14 @@
       scale(var(--scale));
   }
 }
+@keyframes twinkle {
+  from {
+    opacity: var(--twinkle-opacity);
+  }
+  to {
+    opacity: 1;
+  }
+}
 
 html {
   --red: oklch(0.65 0.3 19.41);
@@ -68,7 +76,10 @@ body {
   height: var(--size);
   border-radius: 50%;
   background: white;
+  /* we can get away with multiple keyframes tweaking the same property by using the dinamic keyframe fading from the full keyframe*/
+  /*so the twinkle animation needs to be the first keyframe, followed by the fadeToTransparent animation*/
   animation:
+      twinkle var(--twinkle-duration) infinite alternate ease-in-out,
       fadeToTransparent var(--fade-duration) var(--fade-delay) forwards,
       disperse var(--pop-duration) forwards cubic-bezier(0.2, 0.56, 0, 1);
 }
