@@ -69,6 +69,10 @@ btn.addEventListener('click', ()=>{
         //scale particles randomly (true for decimal value)
         particle.style.setProperty('--scale', random(MIN_SCALE,MAX_SCALE,true));
 
+        //twinkle effect
+        particle.style.setProperty('--twinkle-duration', random(150,300) + 'ms');
+        particle.style.setProperty('--twinkle-opacity', random(0.325,0.5,true));
+        
         //adding particle to the DOM
         btn.appendChild(particle);
 
