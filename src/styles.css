@@ -44,6 +44,13 @@
   }
 }
 
+@keyframes particlesColorShifit {
+  /*hue filter avoid passing through gray zones when the browser converts hsl to rgb*/
+  to {
+    filter: hue-rotate(var(--hue-rotation));
+  }
+}
+
 @keyframes circleColorShift {
   from {
     background: hsl(350deg, 100%, 80%);
@@ -134,12 +141,13 @@ body {
   width: var(--size);
   height: var(--size);
   border-radius: 50%;
-  background: white;
+  pointer-events: none;
   /* we can get away with multiple keyframes tweaking the same property by using the dinamic keyframe fading from the full keyframe*/
   /*so the twinkle animation needs to be the first keyframe, followed by the fadeToTransparent animation*/
   animation: twinkle var(--twinkle-duration) infinite alternate ease-in-out,
     fadeToTransparent var(--fade-duration) var(--fade-delay) forwards,
-    disperse var(--pop-duration) forwards cubic-bezier(0.2, 0.56, 0, 1);
+    disperse var(--pop-duration) forwards cubic-bezier(0.2, 0.56, 0, 1),
+    particlesColorShifit var(--color-shifting-duration) var(--fade-delay) linear forwards;
 }
 
 /*

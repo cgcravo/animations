@@ -76,6 +76,15 @@ btn.addEventListener('click', ()=>{
         particle.style.setProperty('--twinkle-duration', random(150,300) + 'ms');
         particle.style.setProperty('--twinkle-opacity', random(0.325,0.5,true));
 
+        //color shifting
+        const color = `hsl(${random(0,359)}deg, 100%, 60%)`;
+        //initial color
+        particle.style.backgroundColor = color;
+        //final color
+        particle.style.setProperty('--hue-rotation', random(360,720) + 'deg');
+        particle.style.setProperty('--color-shifting-duration', random(500,1000) + 'ms');
+
+
         //keeping track of this particle so that it can be cleanned up latter
         particles.push(particle);
         
